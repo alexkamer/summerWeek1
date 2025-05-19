@@ -1,0 +1,80 @@
+{
+    "linux": [
+        {
+            "question": "What command is used to list all files and directories in the current directory?",
+            "answer": "ls",
+            "hints": [
+                "It's a two-letter command",
+                "Stands for 'list'"
+            ]
+        },
+        {
+            "question": "What command is used to change directories?",
+            "answer": "cd",
+            "hints": [
+                "It's a two-letter command",
+                "Stands for 'change directory'"
+            ]
+        },
+        {
+            "question": "What command is used to display the current working directory?",
+            "answer": "pwd",
+            "hints": [
+                "It's a three-letter command",
+                "Stands for 'print working directory'"
+            ]
+        }
+    ],
+    "git": [
+        {
+            "question": "What command is used to initialize a new Git repository?",
+            "answer": "git init",
+            "hints": [
+                "It's a two-word command",
+                "The first word is 'git'"
+            ]
+        },
+        {
+            "question": "What command is used to stage all changes for commit?",
+            "answer": "git add .",
+            "hints": [
+                "It's a two-word command",
+                "The first word is 'git'"
+            ]
+        },
+        {
+            "question": "What command is used to commit staged changes with a message?",
+            "answer": "git commit -m",
+            "hints": [
+                "It's a three-word command",
+                "The first word is 'git'"
+            ]
+        }
+    ],
+    "uv": [
+        {
+            "question": "What command is used to create a new virtual environment with UV?",
+            "answer": "uv venv",
+            "hints": [
+                "It's a two-word command",
+                "The first word is 'uv'"
+            ]
+        },
+        {
+            "question": "What command is used to install packages with UV?",
+            "answer": "uv pip install",
+            "hints": [
+                "It's a three-word command",
+                "The first word is 'uv'"
+            ]
+        },
+        {
+            "question": "What command is used to sync dependencies with UV?",
+            "answer": "uv pip sync",
+            "hints": [
+                "It's a three-word command",
+                "The first word is 'uv'"
+            ]
+        }
+    ]
+} 
