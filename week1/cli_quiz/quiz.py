@@ -1,4 +1,4 @@
-import json
+import yaml
 import random
 from pathlib import Path
 
@@ -10,12 +10,13 @@ class Quiz:
         self.current_question = None
         self.questions_asked = 0
         self.total_questions = 0
+        self.asked_questions = set()  # Track asked questions
 
     def _load_questions(self):
-        """Load questions from the JSON file."""
-        json_path = Path(__file__).parent / 'questions.json'
-        with open(json_path, 'r') as f:
-            return json.load(f)
+        """Load questions from the YAML file."""
+        yaml_path = Path(__file__).parent / 'questions.yaml'
+        with open(yaml_path, 'r') as f:
+            return yaml.safe_load(f)
 
     def get_categories(self):
         """Return list of available categories."""
@@ -30,11 +31,25 @@ class Quiz:
         return self.current_category
 
     def get_random_question(self):
-        """Get a random question from the current category."""
+        """Get a random question from the current category that hasn't been asked yet."""
         if not self.current_category:
             raise ValueError("No category selected")
         
-        self.current_question = random.choice(self.questions[self.current_category])
+        # Get all questions for the current category
+        available_questions = self.questions[self.current_category]
+        
+        # Filter out questions that have already been asked
+        unasked_questions = [q for q in available_questions if q['question'] not in self.asked_questions]
+        
+        # If all questions have been asked, reset the asked questions set
+        if not unasked_questions:
+            print("\nAll questions in this category have been asked. Resetting question bank...")
+            self.asked_questions.clear()
+            unasked_questions = available_questions
+        
+        # Select a random question from unasked questions
+        self.current_question = random.choice(unasked_questions)
+        self.asked_questions.add(self.current_question['question'])
         return self.current_question
 
     def check_answer(self, user_answer):
@@ -59,6 +74,7 @@ class Quiz:
         self.total_questions = num_questions
         self.questions_asked = 0
         self.score = 0
+        self.asked_questions.clear()  # Reset asked questions when starting new quiz
 
     def display_score(self):
         """Display current score and progress."""
