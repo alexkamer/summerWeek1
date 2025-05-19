@@ -23,6 +23,62 @@
                 "It's a three-letter command",
                 "Stands for 'print working directory'"
             ]
+        },
+        {
+            "question": "What command is used to create a new directory?",
+            "answer": "mkdir",
+            "hints": [
+                "It's a five-letter command",
+                "Stands for 'make directory'"
+            ]
+        },
+        {
+            "question": "What command is used to remove a file?",
+            "answer": "rm",
+            "hints": [
+                "It's a two-letter command",
+                "Stands for 'remove'"
+            ]
+        },
+        {
+            "question": "What command is used to display the contents of a file?",
+            "answer": "cat",
+            "hints": [
+                "It's a three-letter command",
+                "Stands for 'concatenate'"
+            ]
+        },
+        {
+            "question": "What command is used to search for text within files?",
+            "answer": "grep",
+            "hints": [
+                "It's a four-letter command",
+                "Stands for 'Global Regular Expression Print'"
+            ]
+        },
+        {
+            "question": "What command is used to find files by name?",
+            "answer": "find",
+            "hints": [
+                "It's a four-letter command",
+                "Commonly used with -name option"
+            ]
+        },
+        {
+            "question": "What command is used to change file permissions?",
+            "answer": "chmod",
+            "hints": [
+                "It's a five-letter command",
+                "Stands for 'change mode'"
+            ]
+        },
+        {
+            "question": "What command is used to display disk usage?",
+            "answer": "df",
+            "hints": [
+                "It's a two-letter command",
+                "Stands for 'disk free'"
+            ]
         }
     ],
     "git": [
@@ -49,6 +105,62 @@
                 "It's a three-word command",
                 "The first word is 'git'"
             ]
+        },
+        {
+            "question": "What command is used to create and switch to a new branch?",
+            "answer": "git checkout -b",
+            "hints": [
+                "It's a three-word command",
+                "The first word is 'git'"
+            ]
+        },
+        {
+            "question": "What command is used to push changes to a remote repository?",
+            "answer": "git push",
+            "hints": [
+                "It's a two-word command",
+                "The first word is 'git'"
+            ]
+        },
+        {
+            "question": "What command is used to pull changes from a remote repository?",
+            "answer": "git pull",
+            "hints": [
+                "It's a two-word command",
+                "The first word is 'git'"
+            ]
+        },
+        {
+            "question": "What command is used to show the status of your working directory?",
+            "answer": "git status",
+            "hints": [
+                "It's a two-word command",
+                "The first word is 'git'"
+            ]
+        },
+        {
+            "question": "What command is used to show the commit history?",
+            "answer": "git log",
+            "hints": [
+                "It's a two-word command",
+                "The first word is 'git'"
+            ]
+        },
+        {
+            "question": "What command is used to discard changes in working directory?",
+            "answer": "git restore",
+            "hints": [
+                "It's a two-word command",
+                "The first word is 'git'"
+            ]
+        },
+        {
+            "question": "What command is used to merge another branch into current branch?",
+            "answer": "git merge",
+            "hints": [
+                "It's a two-word command",
+                "The first word is 'git'"
+            ]
         }
     ],
     "uv": [
@@ -73,6 +185,62 @@
             "answer": "uv pip sync",
             "hints": [
                 "It's a three-word command",
+                "The first word is 'uv'"
+            ]
+        },
+        {
+            "question": "What command is used to uninstall packages with UV?",
+            "answer": "uv pip uninstall",
+            "hints": [
+                "It's a three-word command",
+                "The first word is 'uv'"
+            ]
+        },
+        {
+            "question": "What command is used to list installed packages with UV?",
+            "answer": "uv pip list",
+            "hints": [
+                "It's a three-word command",
+                "The first word is 'uv'"
+            ]
+        },
+        {
+            "question": "What command is used to freeze dependencies to requirements.txt with UV?",
+            "answer": "uv pip freeze",
+            "hints": [
+                "It's a three-word command",
+                "The first word is 'uv'"
+            ]
+        },
+        {
+            "question": "What command is used to compile requirements.txt with UV?",
+            "answer": "uv pip compile",
+            "hints": [
+                "It's a three-word command",
+                "The first word is 'uv'"
+            ]
+        },
+        {
+            "question": "What command is used to show package information with UV?",
+            "answer": "uv pip show",
+            "hints": [
+                "It's a three-word command",
+                "The first word is 'uv'"
+            ]
+        },
+        {
+            "question": "What command is used to check for outdated packages with UV?",
+            "answer": "uv pip list --outdated",
+            "hints": [
+                "It's a four-word command",
+                "The first word is 'uv'"
+            ]
+        },
+        {
+            "question": "What command is used to install packages from requirements.txt with UV?",
+            "answer": "uv pip install -r requirements.txt",
+            "hints": [
+                "It's a four-word command",
                 "The first word is 'uv'"
             ]
         }

@@ -1,7 +1,7 @@
 import json
 import random
 from pathlib import Path
-print("Hello")
+
 class Quiz:
     def __init__(self):
         self.questions = self._load_questions()
@@ -60,21 +60,40 @@ class Quiz:
         self.questions_asked = 0
         self.score = 0
 
+    def display_score(self):
+        """Display current score and progress."""
+        print(f"\nCurrent score: {self.score}/{self.questions_asked}")
+        if self.total_questions > 0:
+            print(f"Progress: {self.questions_asked}/{self.total_questions} questions answered")
+
+def check_quit(user_input):
+    """Check if user wants to quit."""
+    return user_input.strip().lower() in ['q', 'quit', 'exit']
+
 def main():
     quiz = Quiz()
     
     # Display available categories
     print("\nAvailable categories:", ", ".join(quiz.get_categories()))
+    print("(Type 'q' or 'quit' at any time to exit)")
     
     # Get category from user
     category = input("\nEnter a category (or press Enter for random): ").strip().lower()
+    if check_quit(category):
+        print("\nQuiz terminated. No questions were answered.")
+        return
+    
     selected_category = quiz.select_category(category)
     print(f"\nSelected category: {selected_category}")
     
     # Get number of questions
     while True:
         try:
-            num_questions = int(input("\nHow many questions would you like to answer? "))
+            num_questions = input("\nHow many questions would you like to answer? ")
+            if check_quit(num_questions):
+                print("\nQuiz terminated. No questions were answered.")
+                return
+            num_questions = int(num_questions)
             if num_questions > 0:
                 break
             print("Please enter a positive number.")
@@ -90,7 +109,12 @@ def main():
         print(f"\nQuestion: {question['question']}")
         
         # First attempt
-        user_answer = input("Your answer: ")
+        user_answer = input("Your answer (or 'q' to quit): ")
+        if check_quit(user_answer):
+            quiz.display_score()
+            print("\nQuiz terminated early.")
+            return
+        
         if quiz.check_answer(user_answer):
             print("Correct! +1 point")
             quiz.score += 1
@@ -100,7 +124,12 @@ def main():
             print(quiz.get_hint(0))
             
             # Second attempt
-            user_answer = input("Try again: ")
+            user_answer = input("Try again (or 'q' to quit): ")
+            if check_quit(user_answer):
+                quiz.display_score()
+                print("\nQuiz terminated early.")
+                return
+            
             if quiz.check_answer(user_answer):
                 print("Correct! +1 point")
                 quiz.score += 1
@@ -110,7 +139,12 @@ def main():
                 print(quiz.get_hint(1))
                 
                 # Final attempt
-                user_answer = input("Last try: ")
+                user_answer = input("Last try (or 'q' to quit): ")
+                if check_quit(user_answer):
+                    quiz.display_score()
+                    print("\nQuiz terminated early.")
+                    return
+                
                 if quiz.check_answer(user_answer):
                     print("Correct! +1 point")
                     quiz.score += 1
@@ -120,7 +154,8 @@ def main():
         quiz.questions_asked += 1
     
     # Display final score
-    print(f"\nQuiz completed! Final score: {quiz.score}/{quiz.total_questions}")
+    quiz.display_score()
+    print("\nQuiz completed!")
 
 if __name__ == "__main__":
     main() 
