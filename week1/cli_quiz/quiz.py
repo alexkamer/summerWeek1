@@ -1,33 +1,33 @@
-import yaml
 import random
 from pathlib import Path
+from models import get_session, Category, Question, Hint
 
 class Quiz:
     def __init__(self):
-        self.questions = self._load_questions()
+        self.session = get_session()
         self.score = 0
         self.current_category = None
         self.current_question = None
         self.questions_asked = 0
         self.total_questions = 0
-        self.asked_questions = set()  # Track asked questions
-
-    def _load_questions(self):
-        """Load questions from the YAML file."""
-        yaml_path = Path(__file__).parent / 'questions.yaml'
-        with open(yaml_path, 'r') as f:
-            return yaml.safe_load(f)
+        self.asked_questions = set()
 
     def get_categories(self):
         """Return list of available categories."""
-        return list(self.questions.keys())
+        categories = self.session.query(Category).all()
+        return [category.name for category in categories]
 
     def select_category(self, category=None):
         """Select a category. If None or invalid, select random category."""
-        if category is None or category not in self.questions:
+        if category is None:
             self.current_category = random.choice(self.get_categories())
         else:
-            self.current_category = category
+            # Check if category exists
+            category_obj = self.session.query(Category).filter_by(name=category).first()
+            if category_obj:
+                self.current_category = category
+            else:
+                self.current_category = random.choice(self.get_categories())
         return self.current_category
 
     def get_random_question(self):
@@ -35,11 +35,14 @@ class Quiz:
         if not self.current_category:
             raise ValueError("No category selected")
         
-        # Get all questions for the current category
-        available_questions = self.questions[self.current_category]
+        # Get category object
+        category = self.session.query(Category).filter_by(name=self.current_category).first()
+        
+        # Get all questions for the category
+        available_questions = self.session.query(Question).filter_by(category_id=category.id).all()
         
         # Filter out questions that have already been asked
-        unasked_questions = [q for q in available_questions if q['question'] not in self.asked_questions]
+        unasked_questions = [q for q in available_questions if q.question_text not in self.asked_questions]
         
         # If all questions have been asked, reset the asked questions set
         if not unasked_questions:
@@ -49,7 +52,7 @@ class Quiz:
         
         # Select a random question from unasked questions
         self.current_question = random.choice(unasked_questions)
-        self.asked_questions.add(self.current_question['question'])
+        self.asked_questions.add(self.current_question.question_text)
         return self.current_question
 
     def check_answer(self, user_answer):
@@ -57,16 +60,17 @@ class Quiz:
         if not self.current_question:
             raise ValueError("No question selected")
         
-        return user_answer.strip().lower() == self.current_question['answer'].lower()
+        return user_answer.strip().lower() == self.current_question.answer.lower()
 
     def get_hint(self, hint_index=0):
         """Get a hint for the current question."""
         if not self.current_question:
             raise ValueError("No question selected")
         
-        hints = self.current_question['hints']
+        # Get hints for current question
+        hints = self.session.query(Hint).filter_by(question_id=self.current_question.id).all()
         if 0 <= hint_index < len(hints):
-            return hints[hint_index]
+            return hints[hint_index].hint_text
         return "No more hints available"
 
     def set_total_questions(self, num_questions):
@@ -74,13 +78,17 @@ class Quiz:
         self.total_questions = num_questions
         self.questions_asked = 0
         self.score = 0
-        self.asked_questions.clear()  # Reset asked questions when starting new quiz
+        self.asked_questions.clear()
 
     def display_score(self):
         """Display current score and progress."""
         print(f"\nCurrent score: {self.score}/{self.questions_asked}")
         if self.total_questions > 0:
             print(f"Progress: {self.questions_asked}/{self.total_questions} questions answered")
+
+    def __del__(self):
+        """Close the database session when the quiz object is destroyed."""
+        self.session.close()
 
 def check_quit(user_input):
     """Check if user wants to quit."""
@@ -122,7 +130,7 @@ def main():
     while quiz.questions_asked < quiz.total_questions:
         print(f"\nQuestion {quiz.questions_asked + 1} of {quiz.total_questions}")
         question = quiz.get_random_question()
-        print(f"\nQuestion: {question['question']}")
+        print(f"\nQuestion: {question.question_text}")
         
         # First attempt
         user_answer = input("Your answer (or 'q' to quit): ")
@@ -165,7 +173,7 @@ def main():
                     print("Correct! +1 point")
                     quiz.score += 1
                 else:
-                    print(f"\nIncorrect! The correct answer was: {question['answer']}")
+                    print(f"\nIncorrect! The correct answer was: {question.answer}")
         
         quiz.questions_asked += 1
     
