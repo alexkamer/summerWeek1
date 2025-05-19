@@ -1,7 +1,7 @@
 import json
 import random
 from pathlib import Path
-
+print("Hello")
 class Quiz:
     def __init__(self):
         self.questions = self._load_questions()
